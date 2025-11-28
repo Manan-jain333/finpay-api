@@ -1,9 +1,12 @@
 class Company < ApplicationRecord
-  after_create :create_tenant_schema
+  validates :name, presence: true
+  validates :schema_name, presence: true, uniqueness: true
+
+  after_create :create_tenant
 
   private
 
-  def create_tenant_schema
-    Apartment::Tenant.create(schema_name)
+  def create_tenant
+    Apartment::Tenant.create(:name)
   end
 end
