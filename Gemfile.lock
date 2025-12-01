@@ -80,6 +80,7 @@ GEM
       mutex_m
       securerandom (>= 0.3)
       tzinfo (~> 2.0)
+    alba (3.10.0)
     base64 (0.3.0)
     benchmark (0.5.0)
     bigdecimal (3.3.1)
@@ -148,7 +149,13 @@ GEM
     nokogiri (1.18.10-x86_64-linux-musl)
       racc (~> 1.4)
     parallel (1.27.0)
+    pg (1.6.2)
+    pg (1.6.2-aarch64-linux)
+    pg (1.6.2-aarch64-linux-musl)
     pg (1.6.2-arm64-darwin)
+    pg (1.6.2-x86_64-darwin)
+    pg (1.6.2-x86_64-linux)
+    pg (1.6.2-x86_64-linux-musl)
     pp (0.6.3)
       prettyprint
     prettyprint (0.2.0)
@@ -237,6 +244,7 @@ PLATFORMS
   x86_64-linux-musl
 
 DEPENDENCIES
+  alba (~> 3.10)
   bootsnap
   debug
   pg
