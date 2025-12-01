@@ -8,3 +8,9 @@ Rails.application.routes.draw do
   # Defines the root path route ("/")
   # root "posts#index"
 end
+
+Rails.application.routes.draw do
+  resources :categories
+  resources :expenses
+  resources :receipts, only: [:create, :destroy]
+end
