@@ -38,7 +38,6 @@ class ExpensesController < ApplicationController
   private
 
   def expense_params
-    # assuming you send employee_id and category_id from client
     params.require(:expense).permit(:title, :amount, :date, :employee_id, :category_id)
   end
 end
