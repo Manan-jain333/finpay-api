@@ -1,4 +1,7 @@
 class ExpensesController < ApplicationController
+
+  include AuthenticatedController
+      
   def index
     expenses = Expense.includes(:category, :receipts)
     render json: ExpenseSerializer.new(expenses).serialize

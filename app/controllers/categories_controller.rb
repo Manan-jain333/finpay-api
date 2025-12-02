@@ -1,4 +1,6 @@
 class CategoriesController < ApplicationController
+  include AuthenticatedController
+  
   def index
     categories = Category.all
     render json: CategorySerializer.new(categories).serialize

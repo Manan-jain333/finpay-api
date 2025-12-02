@@ -1,4 +1,6 @@
 class ReceiptsController < ApplicationController
+  include AuthenticatedController
+
   def create
     receipt = Receipt.new(receipt_params)
 
