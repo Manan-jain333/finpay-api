@@ -71,4 +71,13 @@ Rails.application.configure do
 
   # Raise error when a before_action's only/except options reference missing actions
   config.action_controller.raise_on_missing_callback_actions = true
+
+  config.after_initialize do
+    Bullet.enable = true
+    # Bullet.alert = false        # browser alert, not needed for API
+    Bullet.bullet_logger = true # log in log/bullet.log
+    Bullet.console = true       # Print warnings in server console
+    Bullet.rails_logger = true  # Add warnings to Rails log
+    # Bullet.add_footer = false   # no HTML footer
+  end
 end
