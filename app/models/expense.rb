@@ -5,12 +5,17 @@ class Expense < ApplicationRecord
 
   enum status: { pending: 0, approved: 1, rejected: 2 }
 
+  # 👇 Individual scopes
+  scope :by_category, ->(category_id) { where(category_id:) if category_id.present? }
+  scope :by_status, ->(status) { where(status:) if status.present? }
+  scope :from_date, ->(start_date) { where("date >= ?", start_date) if start_date.present? }
+  scope :to_date, ->(end_date) { where("date <= ?", end_date) if end_date.present? }
+
+  # 👇 Master scope combining all
   scope :filtered, ->(params) do
-    expenses = all
-    expenses = expenses.where(category_id: params[:category_id]) if params[:category_id].present?
-    expenses = expenses.where(status: Expense.statuses[params[:status]]) if params[:status].present?
-    expenses = expenses.where("date >= ?", params[:start_date]) if params[:start_date].present?
-    expenses = expenses.where("date <= ?", params[:end_date]) if params[:end_date].present?
-    expenses
+    by_category(params[:category_id])
+      .by_status(params[:status])
+      .from_date(params[:start_date])
+      .to_date(params[:end_date])
   end
 end
