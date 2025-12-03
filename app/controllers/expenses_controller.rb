@@ -1,8 +1,15 @@
 class ExpensesController < ApplicationController
+  include AuthenticatedController
+
   def index
-    expenses = Expense.includes(:category, :receipts)
-    render json: ExpenseSerializer.new(expenses).serialize
+    expenses = Expense.filtered(params)
+                      .includes(:category, :employee)
+                      .page(params[:page])
+                      .per(params[:per_page] || 10)
+
+    render json: ExpensesListSerializer.new(expenses).serialize
   end
+
 
   def show
     expense = Expense.find(params[:id])
@@ -21,7 +28,6 @@ class ExpensesController < ApplicationController
 
   def update
     expense = Expense.find(params[:id])
-
     if expense.update(expense_params)
       render json: ExpenseSerializer.new(expense).serialize
     else
@@ -30,14 +36,17 @@ class ExpensesController < ApplicationController
   end
 
   def destroy
-    expense = Expense.find(params[:id])
-    expense.destroy
+    Expense.find(params[:id]).destroy
     head :no_content
   end
 
   private
 
   def expense_params
-    params.require(:expense).permit(:title, :amount, :date, :employee_id, :category_id)
+    params.require(:expense).permit(:title, :amount, :date, :status, :employee_id, :category_id)
+  end
+
+  def filter_params
+    params.permit(:category_id, :status, :start_date, :end_date)
   end
 end

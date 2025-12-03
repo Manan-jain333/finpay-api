@@ -1,21 +1,18 @@
 class Users::SessionsController < Devise::SessionsController
   respond_to :json
-  skip_before_action :authenticate_user!, only: [:create]
 
-  private
-
-  def respond_with(resource, _opts = {})
-    render json: {
-      message: "Logged in successfully",
-      user: resource
-    }, status: :ok
+  def create
+    self.resource = warden.authenticate!(auth_options)
+    sign_in(resource_name, resource)
+    render json: { message: "Logged in successfully", user: resource }, status: :ok
   end
 
-  def respond_to_on_destroy
+  def destroy
     if current_user
+      sign_out(current_user)
       render json: { message: "Logged out successfully" }, status: :ok
     else
-      render json: { message: "User not logged in" }, status: :unauthorized
+      render json: { error: "User not logged in" }, status: :unauthorized
     end
   end
 end
