@@ -1,6 +1,9 @@
 require 'rails_helper'
 
 RSpec.describe Expense, type: :model do
+
+  let(:approved_expense) { create(:expense, :approved) }
+  let(:rejected_expense) { create(:expense, :rejected) }
   # Associations
   it { should belong_to(:employee) }
   it { should belong_to(:category) }

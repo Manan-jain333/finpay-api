@@ -5,13 +5,21 @@ Rails.application.routes.draw do
     passwords: 'users/passwords'
   }
 
-  # Allow Devise public access
   devise_scope :user do
     post "/users/sign_in", to: "users/sessions#create"
     post "/users", to: "users/registrations#create"
   end
 
   resources :categories
-  resources :expenses
+
+  resources :expenses do
+    member do
+      patch :approve     # /expenses/:id/approve
+      patch :reject      # /expenses/:id/reject
+      patch :reimburse   # /expenses/:id/reimburse
+      patch :archive     # /expenses/:id/archive
+    end
+  end
+
   resources :receipts
 end

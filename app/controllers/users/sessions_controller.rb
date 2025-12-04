@@ -4,7 +4,12 @@ class Users::SessionsController < Devise::SessionsController
   def create
     self.resource = warden.authenticate!(auth_options)
     sign_in(resource_name, resource)
-    render json: { message: "Logged in successfully", user: resource }, status: :ok
+    token = resource.generate_jwt
+    render json: { 
+      message: "Logged in successfully", 
+      user: resource,
+      token: token
+    }, status: :ok
   end
 
   def destroy
