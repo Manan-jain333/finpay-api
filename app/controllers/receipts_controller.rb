@@ -1,9 +1,10 @@
+# app/controllers/receipts_controller.rb
 class ReceiptsController < ApplicationController
   include AuthenticatedController
 
   def create
     receipt = Receipt.new(receipt_params)
-
+    
     if receipt.save
       render json: ReceiptSerializer.new(receipt).serialize, status: :created
     else
@@ -12,8 +13,7 @@ class ReceiptsController < ApplicationController
   end
 
   def destroy
-    receipt = Receipt.find(params[:id])
-    receipt.destroy
+    Receipt.find(params[:id]).destroy
     head :no_content
   end
 

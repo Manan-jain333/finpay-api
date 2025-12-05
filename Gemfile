@@ -16,6 +16,12 @@ gem "pg"          # PostgreSQL adapter
 gem 'ros-apartment', require: 'apartment'
 # gem "apartment"
 
+gem 'aasm'
+
+# Gemfile
+gem 'jwt'
+
+
 
 
 
@@ -42,6 +48,7 @@ group :development, :test do
   gem 'shoulda-matchers'
   gem 'factory_bot_rails'
   gem 'faker'
+  gem 'pry'
 end
 
 gem 'devise'
@@ -52,6 +59,8 @@ group :development do
   gem 'bullet'
 end
 
+gem 'sidekiq'
+gem 'redis', '~> 4.0'
 
 
 # Use Active Storage variants [https://guides.rubyonrails.org/active_storage_overview.html#transforming-images]
