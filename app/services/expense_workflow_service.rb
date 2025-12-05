@@ -77,7 +77,7 @@ class ExpenseWorkflowService
   # Use with care — it bypasses the AASM transition guardrails.
   def force_transition!(to_state, metadata = {})
     to_state = to_state.to_s
-    unless Expense.statuses.key?(to_state)
+    unless Expense::STATUSES.include?(to_state)
       raise WorkflowError, "Invalid status '#{to_state}'"
     end
 

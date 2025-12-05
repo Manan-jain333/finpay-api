@@ -7,17 +7,14 @@ class Expense < ApplicationRecord
   include AASM
 
   # RAILS ENUM FOR STATUS (required for shoulda-matchers + AASM)
-  enum status: {
-    pending: "pending",
-    approved: "approved",
-    rejected: "rejected",
-    reimbursed: "reimbursed",
-    archived: "archived"
-  }
+  # Allowed statuses (AASM will manage transitions). We keep a constant
+  # so other code can reference the valid status values without relying
+  # on ActiveRecord enums.
+  STATUSES = %w[pending approved rejected reimbursed archived].freeze
 
   # AASM STATE MACHINE
 
-  aasm column: :status, enum: true do
+  aasm column: :status do
     state :pending, initial: true
     state :approved
     state :rejected

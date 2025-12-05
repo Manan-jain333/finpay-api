@@ -42,38 +42,42 @@ class ExpensesController < ApplicationController
   # -------------------------------------------------------
 
   def approve
-    if @expense.may_approve?
-      @expense.approve!
+    service = ExpenseWorkflowService.new(@expense, current_user)
+    begin
+      service.approve!(note: params[:note])
       render json: { message: "Expense approved", status: @expense.status }, status: :ok
-    else
-      render json: { error: "Cannot approve this expense" }, status: :unprocessable_entity
+    rescue ExpenseWorkflowService::WorkflowError => e
+      render json: { error: e.message }, status: :unprocessable_entity
     end
   end
 
   def reject
-    if @expense.may_reject?
-      @expense.reject!
+    service = ExpenseWorkflowService.new(@expense, current_user)
+    begin
+      service.reject!(reason: params[:reason])
       render json: { message: "Expense rejected", status: @expense.status }, status: :ok
-    else
-      render json: { error: "Cannot reject this expense" }, status: :unprocessable_entity
+    rescue ExpenseWorkflowService::WorkflowError => e
+      render json: { error: e.message }, status: :unprocessable_entity
     end
   end
 
   def reimburse
-    if @expense.may_reimburse?
-      @expense.reimburse!
+    service = ExpenseWorkflowService.new(@expense, current_user)
+    begin
+      service.reimburse!(note: params[:note])
       render json: { message: "Expense reimbursed", status: @expense.status }, status: :ok
-    else
-      render json: { error: "Cannot reimburse this expense" }, status: :unprocessable_entity
+    rescue ExpenseWorkflowService::WorkflowError => e
+      render json: { error: e.message }, status: :unprocessable_entity
     end
   end
 
   def archive
-    if @expense.may_archive?
-      @expense.archive!
+    service = ExpenseWorkflowService.new(@expense, current_user)
+    begin
+      service.archive!(note: params[:note])
       render json: { message: "Expense archived", status: @expense.status }, status: :ok
-    else
-      render json: { error: "Cannot archive this expense" }, status: :unprocessable_entity
+    rescue ExpenseWorkflowService::WorkflowError => e
+      render json: { error: e.message }, status: :unprocessable_entity
     end
   end
 

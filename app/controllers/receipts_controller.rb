@@ -4,7 +4,7 @@ class ReceiptsController < ApplicationController
 
   def create
     receipt = Receipt.new(receipt_params)
-    # binding.pry
+    
     if receipt.save
       render json: ReceiptSerializer.new(receipt).serialize, status: :created
     else

@@ -5,22 +5,22 @@ FactoryBot.define do
     date { Date.today }
     association :employee
     association :category
-    status { :pending } # AASM initial state
+    status { "pending" } # AASM initial state
 
     trait :approved do
-      status { :approved }
+      status { "approved" }
     end
 
     trait :rejected do
-      status { :rejected }
+      status { "rejected" }
     end
 
     trait :reimbursed do
-      status { :reimbursed }
+      status { "reimbursed" }
     end
 
     trait :archived do
-      status { :archived }
+      status { "archived" }
     end
   end
 end
