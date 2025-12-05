@@ -10,7 +10,7 @@ RSpec.describe "Sessions API", type: :request do
           email: user.email,
           password: "password123"
         }
-      }
+      }, headers: { 'ACCEPT' => 'application/json' }
 
       expect(response).to have_http_status(:ok)
       json_response = JSON.parse(response.body)

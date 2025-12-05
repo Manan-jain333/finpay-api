@@ -16,5 +16,7 @@ module FinpayApi
     # Enable cookies & sessions for Devise
     config.middleware.use ActionDispatch::Cookies
     config.middleware.use ActionDispatch::Session::CookieStore
+    # Enable flash messages (needed for Devise HTML flows / redirects)
+    config.middleware.use ActionDispatch::Flash
   end
 end
