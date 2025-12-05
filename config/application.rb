@@ -8,6 +8,7 @@ module FinpayApi
   class Application < Rails::Application
     config.load_defaults 7.1
     config.autoload_lib(ignore: %w(assets tasks))
+    config.active_job.queue_adapter = :sidekiq
 
     # API mode is ON
     config.api_only = true

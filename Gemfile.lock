@@ -128,6 +128,7 @@ GEM
       pp (>= 0.6.0)
       rdoc (>= 4.0.0)
       reline (>= 0.4.2)
+    json (2.17.1)
     jwt (3.1.2)
       base64
     kaminari (1.2.2)
@@ -250,6 +251,9 @@ GEM
       erb
       psych (>= 4.0.0)
       tsort
+    redis (4.8.1)
+    redis-client (0.26.1)
+      connection_pool
     reline (0.6.3)
       io-console (~> 0.5)
     responders (3.2.0)
@@ -281,6 +285,12 @@ GEM
     securerandom (0.4.1)
     shoulda-matchers (7.0.1)
       activesupport (>= 7.1)
+    sidekiq (8.0.10)
+      connection_pool (>= 2.5.0)
+      json (>= 2.9.0)
+      logger (>= 1.6.2)
+      rack (>= 3.1.0)
+      redis-client (>= 0.23.2)
     stringio (3.1.8)
     thor (1.4.0)
     timeout (0.4.4)
@@ -323,9 +333,11 @@ DEPENDENCIES
   pry
   puma (>= 5.0)
   rails (~> 7.1.0)
+  redis (~> 4.0)
   ros-apartment
   rspec-rails
   shoulda-matchers
+  sidekiq
   tzinfo-data
 
 RUBY VERSION
