@@ -43,6 +43,14 @@ class Expense < ApplicationRecord
   validates :date, presence: true
   validates :amount, presence: true, numericality: { greater_than: 0 }
 
+  after_create :enqueue_receipt_processor_on_create
+
+  private
+
+  def enqueue_receipt_processor_on_create
+    ReceiptProcessorWorker.perform_async({ 'event' => 'expense_created', 'expense_id' => id })
+  end
+
   # FILTERING SCOPES
   scope :by_category, ->(category_id) { where(category_id:) if category_id.present? }
   scope :by_status, ->(status) { where(status:) if status.present? }

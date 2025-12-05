@@ -52,6 +52,8 @@ class ExpenseWorkflowService
       end
 
       create_log(event.to_s, metadata)
+      # Enqueue background processing for receipts/expense post-processing
+      ReceiptProcessorWorker.perform_async({ 'event' => 'status_changed', 'expense_id' => @expense.id, 'meta' => { 'from' => prior_status, 'to' => @expense.status } })
     end
 
     @expense
