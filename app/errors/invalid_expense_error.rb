@@ -1,0 +1,1 @@
+class InvalidExpenseError < StandardError; end
