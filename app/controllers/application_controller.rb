@@ -1,3 +1,5 @@
+require_relative '../errors/custom_exceptions'
+
 class ApplicationController < ActionController::API
 	include ApiResponder
 	include ErrorHandler

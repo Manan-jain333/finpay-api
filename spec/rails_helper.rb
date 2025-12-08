@@ -1,4 +1,16 @@
-# This file is copied to spec/ when you run 'rails generate rspec:install'
+require 'simplecov'
+SimpleCov.start 'rails' do
+  add_filter '/spec/'
+  add_group 'Controllers', 'app/controllers'
+  add_group 'Models', 'app/models'
+  add_group 'Services', 'app/services'
+  add_group 'Workers', 'app/workers'
+  add_group 'Serializers', 'app/serializers'
+end
+if ENV['CI'] || ENV['SIMPLECOV_MINIMUM']
+  SimpleCov.minimum_coverage 90
+end
+
 require 'spec_helper'
 ENV['RAILS_ENV'] ||= 'test'
 require_relative '../config/environment'

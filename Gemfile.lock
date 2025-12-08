@@ -109,6 +109,7 @@ GEM
       responders
       warden (~> 1.2.3)
     diff-lcs (1.6.2)
+    docile (1.4.1)
     drb (2.2.3)
     erb (6.0.0)
     erubi (1.13.1)
@@ -281,6 +282,11 @@ GEM
       rspec-expectations (~> 3.13)
       rspec-mocks (~> 3.13)
       rspec-support (~> 3.13)
+    rspec-sidekiq (5.2.0)
+      rspec-core (~> 3.0)
+      rspec-expectations (~> 3.0)
+      rspec-mocks (~> 3.0)
+      sidekiq (>= 5, < 9)
     rspec-support (3.13.6)
     securerandom (0.4.1)
     shoulda-matchers (7.0.1)
@@ -291,6 +297,12 @@ GEM
       logger (>= 1.6.2)
       rack (>= 3.1.0)
       redis-client (>= 0.23.2)
+    simplecov (0.22.0)
+      docile (~> 1.1)
+      simplecov-html (~> 0.11)
+      simplecov_json_formatter (~> 0.1)
+    simplecov-html (0.13.2)
+    simplecov_json_formatter (0.1.4)
     stringio (3.1.8)
     thor (1.4.0)
     timeout (0.4.4)
@@ -336,8 +348,10 @@ DEPENDENCIES
   redis (~> 4.0)
   ros-apartment
   rspec-rails
+  rspec-sidekiq
   shoulda-matchers
   sidekiq
+  simplecov
   tzinfo-data
 
 RUBY VERSION
