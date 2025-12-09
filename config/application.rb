@@ -24,5 +24,7 @@ module FinpayApi
     config.middleware.use ActionDispatch::Flash
     # Request throttling via Rack::Attack
     config.middleware.use Rack::Attack
+    # Secure HTTP headers
+    config.middleware.use SecureHeaders::Middleware
   end
 end

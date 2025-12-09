@@ -290,6 +290,7 @@ GEM
       rspec-mocks (~> 3.0)
       sidekiq (>= 5, < 9)
     rspec-support (3.13.6)
+    secure_headers (7.1.0)
     securerandom (0.4.1)
     shoulda-matchers (7.0.1)
       activesupport (>= 7.1)
@@ -352,6 +353,7 @@ DEPENDENCIES
   ros-apartment
   rspec-rails
   rspec-sidekiq
+  secure_headers
   shoulda-matchers
   sidekiq
   simplecov
