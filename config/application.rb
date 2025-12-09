@@ -7,8 +7,12 @@ Bundler.require(*Rails.groups)
 module FinpayApi
   class Application < Rails::Application
     config.load_defaults 7.1
-    config.autoload_lib(ignore: %w(assets tasks))
+    # removed unsupported `autoload_lib` call which caused frozen path errors
     config.active_job.queue_adapter = :sidekiq
+
+    # Add app/errors to the autoload/eager load paths safely
+    config.paths.add "app/errors", eager_load: true
+
 
     # API mode is ON
     config.api_only = true
