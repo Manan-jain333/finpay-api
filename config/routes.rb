@@ -1,5 +1,8 @@
 Rails.application.routes.draw do
   require 'sidekiq/web'
+  # Swagger UI and API (rswag)
+  mount Rswag::Ui::Engine => '/api-docs'
+  mount Rswag::Api::Engine => '/api-docs'
 
   # Secure Sidekiq Web UI using Devise authentication (only admin users).
   # Ensure `config.middleware.use ActionDispatch::Cookies` and

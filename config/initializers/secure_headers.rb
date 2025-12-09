@@ -28,11 +28,8 @@ SecureHeaders::Configuration.default do |config|
     form_action: %w('self')
   }
 
-  # Feature-Policy / Permissions-Policy: minimal defaults (adjust as needed)
-  # Example: disable geolocation, microphone, camera by default
-  config.permissions_policy = {
-    geolocation: [],
-    microphone: [],
-    camera: []
-  }
+  # Note: older versions of secure_headers used `permissions_policy`, which
+  # may not be available in all gem versions. To avoid initialization errors
+  # we omit a permissions_policy here. Add a custom header if you need to set
+  # Permissions-Policy / Permissions-Policy headers explicitly for your app.
 end

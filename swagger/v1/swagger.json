@@ -1,0 +1,66 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "Finpay API",
+    "version": "v1",
+    "description": "Basic OpenAPI spec for Finpay API (auto-generated minimal)."
+  },
+  "paths": {
+    "/api/v1/expenses": {
+      "get": {
+        "summary": "List expenses",
+        "responses": {
+          "200": { "description": "A list of expenses" }
+        }
+      },
+      "post": {
+        "summary": "Create an expense",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/ExpenseCreate" }
+            }
+          }
+        },
+        "responses": {
+          "201": { "description": "Expense created" },
+          "422": { "description": "Validation error" }
+        }
+      }
+    },
+    "/api/v1/expenses/{id}/approve": {
+      "patch": {
+        "summary": "Approve an expense",
+        "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "integer" } }],
+        "responses": { "200": { "description": "Approved" }, "422": { "description": "Cannot approve" } }
+      }
+    },
+    "/api/v1/categories": {
+      "get": { "summary": "List categories", "responses": { "200": { "description": "OK" } } },
+      "post": { "summary": "Create category", "responses": { "201": { "description": "Created" }, "422": { "description": "Validation error" } } }
+    },
+    "/users/sign_in": {
+      "post": {
+        "summary": "Sign in (returns token)",
+        "requestBody": { "required": true },
+        "responses": { "200": { "description": "Logged in" }, "422": { "description": "Invalid creds" } }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "ExpenseCreate": {
+        "type": "object",
+        "properties": {
+          "title": { "type": "string" },
+          "amount": { "type": "number" },
+          "date": { "type": "string", "format": "date" },
+          "category_id": { "type": "integer" },
+          "employee_id": { "type": "integer" }
+        },
+        "required": ["title","amount","date","category_id","employee_id"]
+      }
+    }
+  }
+}

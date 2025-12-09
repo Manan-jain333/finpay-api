@@ -25,8 +25,8 @@ class Rack::Attack
   end
 
   # Return a 429 with a JSON body for throttled API requests
-  self.throttled_response = lambda do |env|
-    now = Time.now.utc
+  # Use the newer `throttled_responder` API (replaces deprecated `throttled_response`)
+  Rack::Attack.throttled_responder = lambda do |env|
     retry_after = (env['rack.attack.match_data'] || {})[:period]
     headers = {
       'Content-Type' => 'application/json',

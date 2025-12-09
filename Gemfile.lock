@@ -82,6 +82,8 @@ GEM
       mutex_m
       securerandom (>= 0.3)
       tzinfo (~> 2.0)
+    addressable (2.8.8)
+      public_suffix (>= 2.0.2, < 8.0)
     alba (3.10.0)
     base64 (0.3.0)
     bcrypt (3.1.20)
@@ -130,6 +132,9 @@ GEM
       rdoc (>= 4.0.0)
       reline (>= 0.4.2)
     json (2.17.1)
+    json-schema (6.0.0)
+      addressable (~> 2.8)
+      bigdecimal (~> 3.1)
     jwt (3.1.2)
       base64
     kaminari (1.2.2)
@@ -290,6 +295,17 @@ GEM
       rspec-mocks (~> 3.0)
       sidekiq (>= 5, < 9)
     rspec-support (3.13.6)
+    rswag-api (2.17.0)
+      activesupport (>= 5.2, < 8.2)
+      railties (>= 5.2, < 8.2)
+    rswag-specs (2.17.0)
+      activesupport (>= 5.2, < 8.2)
+      json-schema (>= 2.2, < 7.0)
+      railties (>= 5.2, < 8.2)
+      rspec-core (>= 2.14)
+    rswag-ui (2.17.0)
+      actionpack (>= 5.2, < 8.2)
+      railties (>= 5.2, < 8.2)
     secure_headers (7.1.0)
     securerandom (0.4.1)
     shoulda-matchers (7.0.1)
@@ -353,6 +369,9 @@ DEPENDENCIES
   ros-apartment
   rspec-rails
   rspec-sidekiq
+  rswag-api
+  rswag-specs
+  rswag-ui
   secure_headers
   shoulda-matchers
   sidekiq

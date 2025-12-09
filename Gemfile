@@ -66,6 +66,12 @@ gem 'redis', '~> 4.0'
 gem 'rack-attack'
 gem 'secure_headers'
 
+group :development, :test do
+  gem 'rswag-api'
+  gem 'rswag-ui'
+  gem 'rswag-specs'
+end
+
 
 # Use Active Storage variants [https://guides.rubyonrails.org/active_storage_overview.html#transforming-images]
 # gem "image_processing", "~> 1.2"
