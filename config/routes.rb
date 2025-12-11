@@ -1,5 +1,8 @@
 Rails.application.routes.draw do
   require 'sidekiq/web'
+  # Swagger UI and API (rswag)
+  mount Rswag::Ui::Engine => '/api-docs'
+  mount Rswag::Api::Engine => '/api-docs'
 
   # Secure Sidekiq Web UI using Devise authentication (only admin users).
   # Ensure `config.middleware.use ActionDispatch::Cookies` and
@@ -33,4 +36,25 @@ Rails.application.routes.draw do
   end
 
   resources :receipts
+
+  # API namespace (versioned)
+  scope path: '/api' do
+    scope path: '/v1', defaults: { format: :json } do
+      # Reuse existing controllers (no module) so controllers don't need to be moved.
+      scope module: nil do
+        resources :categories
+
+        resources :expenses do
+          member do
+            patch :approve
+            patch :reject
+            patch :reimburse
+            patch :archive
+          end
+        end
+
+        resources :receipts
+      end
+    end
+  end
 end
