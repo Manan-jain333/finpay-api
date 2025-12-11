@@ -1,0 +1,156 @@
+{
+  "info": {
+    "name": "Finpay API",
+    "_postman_id": "finpay-api-collection",
+    "description": "Postman collection for Finpay API. Includes Sign-in that saves `auth_token` and sample requests for Expenses, Categories and Receipts.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Auth - Sign In",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Accept", "value": "application/json" },
+          { "key": "Content-Type", "value": "application/x-www-form-urlencoded" }
+        ],
+        "body": {
+          "mode": "urlencoded",
+          "urlencoded": [
+            { "key": "user[email]", "value": "{{user_email}}", "type": "text" },
+            { "key": "user[password]", "value": "{{user_password}}", "type": "text" }
+          ]
+        },
+        "url": "{{baseUrl}}/users/sign_in"
+      },
+      "response": [],
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "// Extract token from JSON response and set environment variable",
+              "if (pm.response.code === 200) {",
+              "  var json = pm.response.json();",
+              "  if (json.token) {",
+              "    pm.environment.set('auth_token', json.token);",
+              "  }",
+              "  if (json.user && json.user.id) {",
+              "    pm.environment.set('user_id', json.user.id);",
+              "  }",
+              "} else {",
+              "  console.log('Sign in did not return 200:', pm.response.code);",
+              "}"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Categories - Create",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Accept", "value": "application/json" },
+          { "key": "Content-Type", "value": "application/json" },
+          { "key": "Authorization", "value": "Bearer {{auth_token}}" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{ \"name\": \"Sample Category\" }"
+        },
+        "url": "{{baseUrl}}/api/v1/categories"
+      },
+      "response": [],
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "if (pm.response.code === 201) {",
+              "  const json = pm.response.json();",
+              "  if (json && json['id']) pm.environment.set('category_id', json['id']);",
+              "}"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Expenses - Create",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Accept", "value": "application/json" },
+          { "key": "Content-Type", "value": "application/json" },
+          { "key": "Authorization", "value": "Bearer {{auth_token}}" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"expense\": {\n    \"title\": \"Test Expense from Postman\",\n    \"amount\": 12.5,\n    \"date\": \"2025-12-08\",\n    \"category_id\": {{category_id}},\n    \"employee_id\": {{user_id}}\n  }\n}"
+        },
+        "url": "{{baseUrl}}/api/v1/expenses"
+      },
+      "response": [],
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "if (pm.response.code === 201) {",
+              "  const json = pm.response.json();",
+              "  // Some serializers wrap data, so try to discover id
+              "  const id = json.id || (json.data && json.data.id) || (json['expense'] && json['expense'].id);",
+              "  if (id) pm.environment.set('expense_id', id);",
+              "}"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Expenses - List",
+      "request": {
+        "method": "GET",
+        "header": [
+          { "key": "Accept", "value": "application/json" },
+          { "key": "Authorization", "value": "Bearer {{auth_token}}" }
+        ],
+        "url": "{{baseUrl}}/api/v1/expenses"
+      },
+      "response": []
+    },
+    {
+      "name": "Expenses - Approve",
+      "request": {
+        "method": "PATCH",
+        "header": [
+          { "key": "Accept", "value": "application/json" },
+          { "key": "Content-Type", "value": "application/json" },
+          { "key": "Authorization", "value": "Bearer {{auth_token}}" }
+        ],
+        "body": { "mode": "raw", "raw": "{ \"note\": \"Approved via Postman\" }" },
+        "url": "{{baseUrl}}/api/v1/expenses/{{expense_id}}/approve"
+      },
+      "response": []
+    },
+    {
+      "name": "Receipts - Create",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Accept", "value": "application/json" },
+          { "key": "Content-Type", "value": "application/json" },
+          { "key": "Authorization", "value": "Bearer {{auth_token}}" }
+        ],
+        "body": { "mode": "raw", "raw": "{ \"receipt\": { \"file_url\": \"https://example.com/receipt.jpg\", \"expense_id\": {{expense_id}} } }" },
+        "url": "{{baseUrl}}/api/v1/receipts"
+      },
+      "response": []
+    }
+  ],
+  "variable": []
+}

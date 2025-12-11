@@ -1,60 +1,50 @@
 Rails.application.routes.draw do
   require 'sidekiq/web'
-  # Swagger UI and API (rswag)
+
+  # Swagger
   mount Rswag::Ui::Engine => '/api-docs'
   mount Rswag::Api::Engine => '/api-docs'
 
-  # Secure Sidekiq Web UI using Devise authentication (only admin users).
-  # Ensure `config.middleware.use ActionDispatch::Cookies` and
-  # `ActionDispatch::Session::CookieStore` are enabled in
-  # `config/application.rb` so Devise sessions work for the web UI.
-    # Mount Sidekiq Web UI under `/admin/sidekiq` and protect it with Devise
-    # admin authentication. This ensures only signed-in admin users can visit
-    # the Sidekiq UI in the browser.
-  mount Sidekiq::Web => '/sidekiq'
+  namespace :api do
+    namespace :v1 do
+      devise_for :users, path: 'users', controllers: {
+        registrations: 'api/v1/users/registrations',
+        sessions: 'api/v1/users/sessions'
+      }
 
-  devise_for :users, controllers: {
-    registrations: 'users/registrations',
-    sessions: 'users/sessions',
-    passwords: 'users/passwords'
-  }
+      devise_scope :user do
+        post '/users/sign_in', to: 'users/sessions#create'
+        post '/users', to: 'users/registrations#create'
+      end
 
-  devise_scope :user do
-    post "/users/sign_in", to: "users/sessions#create"
-    post "/users", to: "users/registrations#create"
-  end
-
-  resources :categories
-
-  resources :expenses do
-    member do
-      patch :approve     # /expenses/:id/approve
-      patch :reject      # /expenses/:id/reject
-      patch :reimburse   # /expenses/:id/reimburse
-      patch :archive     # /expenses/:id/archive
-    end
-  end
-
-  resources :receipts
-
-  # API namespace (versioned)
-  scope path: '/api' do
-    scope path: '/v1', defaults: { format: :json } do
-      # Reuse existing controllers (no module) so controllers don't need to be moved.
-      scope module: nil do
-        resources :categories
-
-        resources :expenses do
-          member do
-            patch :approve
-            patch :reject
-            patch :reimburse
-            patch :archive
-          end
+      resources :companies
+      resources :categories
+      resources :expenses do
+        member do
+          patch :approve
+          patch :reject
+          patch :reimburse
+          patch :archive
         end
-
-        resources :receipts
+      end
+      resources :receipts
+      resources :activity_logs, only: [:index, :show] do
+        collection do
+          get :by_expense
+        end
+      end
+      resources :jobs, only: [] do
+        collection do
+          get :stats
+          get :queue
+          get :failed
+          post :test
+        end
       end
     end
+  end
+
+  authenticate :user, lambda { |u| u.admin? } do
+    mount Sidekiq::Web => '/admin/sidekiq'
   end
 end

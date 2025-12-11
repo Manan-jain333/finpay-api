@@ -11,6 +11,7 @@ module FinpayApi
     config.active_job.queue_adapter = :sidekiq
 
     # Add app/errors to the autoload/eager load paths safely
+    config.autoload_paths += %W[#{config.root}/app/errors]
     config.paths.add "app/errors", eager_load: true
 
 
